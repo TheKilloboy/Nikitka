@@ -1,123 +1,238 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Никитка</title>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
-
-    /* Базовые правила */
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; padding: 0; }
-
-    /* Запрещаем горизонтальный скролл (чтобы не было пустых зон при сдвиге) */
-    html { overflow-x: hidden; }
-
-    /* Фон через фиксированный псевдоэлемент — всегда покрывает страницу */
-    body {
-        font-family: 'Montserrat', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-        min-height: 100vh;
-        position: relative;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        /* Не задаём основной градиент здесь чтобы избежать "отваливающегося" фона при сдвиге */
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Никитка — минимализм</title>
+  <style>
+    /* Минималистичная палитра, гибкая типографика */
+    :root{
+      --bg:#f7f8fa;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent:#0f172a;
+      --glass: rgba(15,23,42,0.04);
+      --radius:14px;
+      --shadow: 0 6px 18px rgba(12,18,30,0.06);
     }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;padding:0;}
+    html{overflow-x:hidden}
+    body{
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:var(--accent);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      position:relative;
+    }/* Канвас для интерактива занимает весь экран, под контентом */
+canvas#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%;display:block}
 
-    body::before {
-        content: "";
-        position: fixed;
-        inset: 0; /* top:0; right:0; bottom:0; left:0; */
-        z-index: -1;
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-        will-change: background-position;
-    }
+/* Карточка в центре */
+.card{
+  position:relative;
+  z-index:2; /* над канвой */
+  width:min(640px,92%);
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:28px 34px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--glass);
+  display:flex;
+  gap:16px;
+  align-items:center;
+  justify-content:flex-start;
+  transition:transform .22s ease, box-shadow .22s ease;
+  touch-action:manipulation;
+}
 
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+.card:active{transform:translateY(1px)}
 
-    /* Карточка */
-    .container {
-        text-align: center;
-        background: rgba(255,255,255,0.08);
-        padding: clamp(14px, 6vw, 60px);
-        border-radius: 20px;
-        box-shadow: 0 8px 32px rgba(31,38,135,0.25);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid rgba(255,255,255,0.12);
+.avatar{
+  width:64px;height:64px;border-radius:10px;background:linear-gradient(180deg,#f3f4f6,#fff);display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,0.04)
+}
+.avatar svg{width:34px;height:34px;fill:var(--muted)}
 
-        /* Контролируем ширину — не выйдет за экран */
-        width: min(95%, 420px);
-        max-width: 100%;
-        margin: 20px auto;
-        animation: fadeIn 450ms ease-out;
-        overflow-wrap: break-word; /* чтобы длинные слова не ломали верстку */
-    }
+.meta{
+  display:flex;flex-direction:column;gap:6px;min-width:0
+}
+h1{font-size:1.5rem;margin:0;letter-spacing:-0.01em}
+.sub{font-size:.95rem;color:var(--muted)}
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(6px) scale(0.99); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
-    }
+/* Пустое пространство справа от карточки — интерактивная зона */
+.layout{display:flex;align-items:center;gap:24px;width:100%;padding:28px;box-sizing:border-box}
 
-    h1 {
-        font-size: clamp(2.2rem, 10vw, 5rem);
-        margin: 0;
-        font-weight: 700;
-        line-height: 1;
-        background: -webkit-linear-gradient(45deg, #fff, #ddd);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 2px 2px 10px rgba(0,0,0,0.18);
-        word-break: break-word;
-        overflow-wrap: anywhere;
-    }
+/* На мобильных — стопроцентная компактность */
+@media (max-width:520px){
+  .card{padding:18px 18px;width:min(520px,95%)}
+  .avatar{width:56px;height:56px}
+  h1{font-size:1.25rem}
+}
 
-    .secure-connection {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: clamp(12px, 3vw, 20px);
-        color: #f0f0f0;
-        font-size: clamp(0.85rem, 3vw, 1rem);
-        font-weight: 500;
-        user-select: none;
-    }
+/* Reduced motion */
+@media (prefers-reduced-motion:reduce){
+  canvas#bg-canvas{display:none}
+  .card{transition:none}
+}
 
-    .secure-connection svg { width: 1.25em; height: 1.25em; fill: #43e461; flex: 0 0 auto; }
+/* Небольшая подсказка внизу для интерактива */
+.hint{position:fixed;z-index:3;left:50%;transform:translateX(-50%);bottom:18px;font-size:.85rem;color:var(--muted);background:rgba(255,255,255,0.9);padding:8px 12px;border-radius:999px;border:1px solid rgba(0,0,0,0.04);box-shadow:0 6px 18px rgba(12,18,30,0.04)}
 
-    /* Адаптация под маленькие экраны */
-    @media (max-width: 420px) {
-        .container { padding: clamp(10px, 5vw, 32px); border-radius: 14px; }
-        .secure-connection svg { width: 1.5em; height: 1.5em; }
-    }
-
-    /* Очень узкие экраны — скрываем текст метки */
-    @media (max-width: 340px) {
-        .secure-connection span { display: none; }
-    }
-
-    /* Поддержка reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-        body::before { animation: none; }
-        .container { animation: none; }
-    }
-</style>
+  </style>
 </head>
 <body>
-    <div class="container" role="region" aria-label="Карточка Никитка">
+  <!-- Канвас: на нём рендерятся частицы и рипплы -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>  <main class="layout" role="main">
+    <article class="card" id="card">
+      <div class="avatar" aria-hidden="true">
+        <!-- Лаконичная иконка замка -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2a4 4 0 0 0-4 4v3H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-2V6a4 4 0 0 0-4-4zm-2 7V6a2 2 0 1 1 4 0v3h-4z"/>
+        </svg>
+      </div>
+      <div class="meta">
         <h1>Никитка</h1>
-        <div class="secure-connection" title="Безопасное соединение">
-            <svg role="img" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="false" focusable="false">
-                <path d="M336 208v-95a80 80 0 0 0-160 0v95h-32a32 32 0 0 0-32 32v192a32 32 0 0 0 32 32h224a32 32 0 0 0 32-32V240a32 32 0 0 0-32-32zm-48 0H192v-95a48 48 0 0 1 96 0z"/>
-            </svg>
-            <span>Безопасное соединение</span>
-        </div>
-    </div>
-</body>
+        <div class="sub">Безопасное соединение · минимализм</div>
+      </div>
+      <!-- Пустое место внутри карточки занимаем гибко, чтобы карточка не растягивалась -->
+      <div style="flex:1"></div>
+      <!-- Небольшая кнопка — минималистичный контрол -->
+      <button id="themBtn" aria-pressed="false" style="background:none;border:1px solid var(--glass);padding:8px 10px;border-radius:10px;cursor:pointer">Переключить</button>
+    </article><!-- Пустая область справа: пользователь будет взаимодействовать с ней -->
+<div style="flex:1;min-height:120px;" id="interactiveZone" aria-label="Интерактивная зона" tabindex="0"></div>
+
+  </main>  <div class="hint">Клик/тап в пустом пространстве — появится мягкий эффект</div>  <script>
+    // Минималистичный интерактив: лёгкие частицы, рипплы по клику и след курсора
+    (function(){
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let W = canvas.width = innerWidth;
+      let H = canvas.height = innerHeight;
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width = W * dpr; canvas.height = H * dpr; canvas.style.width = W+'px'; canvas.style.height = H+'px';
+      ctx.scale(dpr, dpr);
+
+      // Частицы
+      const particles = [];
+      const ripples = [];
+
+      function Particle(x,y){
+        this.x = x; this.y = y;
+        this.vx = (Math.random()-0.5)*0.6; this.vy = (Math.random()-0.5)*0.6 - 0.2;
+        this.life = 80 + Math.random()*60; this.age = 0; this.size = 1 + Math.random()*2; this.alpha = 0.9;
+      }
+      Particle.prototype.step = function(){
+        this.x += this.vx; this.y += this.vy; this.vy += 0.01; this.age++; this.alpha *= 0.995; return this.age < this.life;
+      }
+
+      function Ripple(x,y){
+        this.x=x;this.y=y;this.r=4;this.max=120+Math.random()*60;this.alpha=0.45;
+      }
+      Ripple.prototype.step = function(){ this.r += 2.5; this.alpha *= 0.985; return this.r < this.max && this.alpha>0.01 }
+
+      function spawnParticles(x,y,n=6){ for(let i=0;i<n;i++) particles.push(new Particle(x + (Math.random()-0.5)*8, y + (Math.random()-0.5)*8)); }
+      function spawnRipple(x,y){ ripples.push(new Ripple(x,y)); }
+
+      let mouse = {x:W/2,y:H/2};
+      let lastMove = 0;
+
+      // Интерактивная зона — клики лишь за пределами карточки
+      const zone = document.getElementById('interactiveZone');
+      const card = document.getElementById('card');
+
+      function clientToCanvas(e){
+        const rect = canvas.getBoundingClientRect();
+        return {x: (e.clientX - rect.left), y: (e.clientY - rect.top)};
+      }
+
+      // Клик/тап по странице — если клик в зоне (или вне карточки), создаём эффект
+      document.addEventListener('pointerdown', (ev)=>{
+        // игнорируем если клик по карточке или по контролах внутри неё
+        if(card.contains(ev.target)) return;
+        const p = clientToCanvas(ev);
+        spawnRipple(p.x,p.y);
+        spawnParticles(p.x,p.y,10);
+      }, {passive:true});
+
+      // След курсора — лёгкая генерация частиц
+      document.addEventListener('pointermove', (ev)=>{
+        mouse.x = ev.clientX; mouse.y = ev.clientY; lastMove = Date.now();
+        // Если курсор далеко от карточки — добавляем очень лёгкие частицы
+        if(!card.contains(ev.target)){
+          const p = clientToCanvas(ev);
+          if(Math.random() < 0.12) spawnParticles(p.x,p.y,1);
+        }
+      }, {passive:true});
+
+      // Кнопка «Переключить» — просто пример мини-контролла: переключает вид подсказки
+      const themBtn = document.getElementById('themBtn');
+      let alt = false;
+      themBtn.addEventListener('click', ()=>{
+        alt = !alt; document.body.style.background = alt ? 'linear-gradient(180deg,#f8fafc,#eef2ff)' : '';
+        themBtn.setAttribute('aria-pressed', String(alt));
+      });
+
+      // Экономный рендер
+      function render(){
+        ctx.clearRect(0,0,W,H);
+        // рисуем лёгкий градиент-паттерн на фоне, чтобы было не пусто, но минималистично
+        const g = ctx.createLinearGradient(0,0,0,H);
+        g.addColorStop(0,'rgba(15,23,42,0.02)'); g.addColorStop(1,'rgba(15,23,42,0.00)');
+        ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+
+        // рисуем рипплы
+        for(let i=ripples.length-1;i>=0;i--){
+          const r = ripples[i];
+          ctx.beginPath(); ctx.arc(r.x, r.y, r.r, 0, Math.PI*2);
+          ctx.strokeStyle = 'rgba(15,23,42,'+ (r.alpha*0.7) +')'; ctx.lineWidth = 1.2;
+          ctx.stroke();
+          if(!r.step()) ripples.splice(i,1);
+        }
+
+        // частицы
+        for(let i=particles.length-1;i>=0;i--){
+          const p = particles[i];
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+          ctx.fillStyle = 'rgba(15,23,42,'+ (p.alpha*0.6) +')'; ctx.fill();
+          if(!p.step()) particles.splice(i,1);
+        }
+
+        // мягкий follow — небольшой яркий круг под курсором, но только если вне карточки
+        if(!card.contains(document.elementFromPoint(mouse.x, mouse.y))){
+          ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 6, 0, Math.PI*2);
+          ctx.fillStyle = 'rgba(14,165,233,0.14)'; ctx.fill();
+        }
+
+        requestAnimationFrame(render);
+      }
+      render();
+
+      // Реакция на ресайз
+      let resizeTO;
+      addEventListener('resize', ()=>{
+        clearTimeout(resizeTO);
+        resizeTO = setTimeout(()=>{
+          W = canvas.width = innerWidth; H = canvas.height = innerHeight;
+          canvas.width = W * dpr; canvas.height = H * dpr; canvas.style.width = W+'px'; canvas.style.height = H+'px'; ctx.setTransform(dpr,0,0,dpr,0,0);
+        },120);
+      });
+
+      // Доступность: клавиатурный триггер — пробел создаёт эффект в центре зоны
+      zone.addEventListener('keydown',(e)=>{
+        if(e.code === 'Space' || e.key === ' '){
+          const rect = zone.getBoundingClientRect();
+          const cx = rect.left + rect.width/2; const cy = rect.top + rect.height/2;
+          spawnRipple(cx,cy); spawnParticles(cx,cy,12);
+          e.preventDefault();
+        }
+      });
+
+      // Убираем pointer-events: none у канваса при редких интеракциях не нужно
+    })();
+  </script></body>
 </html>
