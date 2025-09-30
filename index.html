@@ -483,7 +483,9 @@
         let wins = 0;
         let spinning = false;
 
-        // Create stars
+        /**
+         * Creates star elements and appends them to the stars container for a background effect.
+         */
         const starsContainer = document.getElementById('stars');
         for (let i = 0; i < 100; i++) {
             const star = document.createElement('div');
@@ -494,7 +496,9 @@
             starsContainer.appendChild(star);
         }
 
-        // Initialize reels
+        /**
+         * Initializes the slot machine reels with random symbols.
+         */
         function initReels() {
             for (let i = 0; i < 7; i++) {
                 const reel = document.getElementById(`reel${i}`);
@@ -509,6 +513,10 @@
 
         initReels();
 
+        /**
+         * Starts the spinning of the reels, updates stats, and checks for a win.
+         * @returns {Promise<void>}
+         */
         async function spin() {
             if (spinning) return;
             
@@ -541,6 +549,12 @@
             document.getElementById('spinButton').disabled = false;
         }
 
+        /**
+         * Animates a single reel to spin and land on a symbol.
+         * @param {number} index - The index of the reel to spin.
+         * @param {number} duration - The duration of the spin animation.
+         * @returns {Promise<string>} A promise that resolves with the final symbol.
+         */
         function spinReel(index, duration) {
             return new Promise((resolve) => {
                 const reel = document.getElementById(`reel${index}`);
@@ -597,6 +611,10 @@
             });
         }
 
+        /**
+         * Checks the results of the spin to see if the player has won.
+         * @param {string[]} results - An array of the symbols from each reel.
+         */
         function checkWin(results) {
             let correctCount = 0;
             const correctIndices = [];
@@ -629,14 +647,23 @@
             document.getElementById('percentage').textContent = percentage + '%';
         }
 
+        /**
+         * Displays the win overlay message.
+         */
         function showWinOverlay() {
             document.getElementById('winOverlay').style.display = 'flex';
         }
 
+        /**
+         * Closes the win overlay message.
+         */
         function closeWinMessage() {
             document.getElementById('winOverlay').style.display = 'none';
         }
 
+        /**
+         * Creates a fireworks effect on the screen.
+         */
         function createFireworks() {
             const container = document.getElementById('fireworks');
             const colors = ['#ff6b6b', '#ffd700', '#4ade80', '#60a5fa', '#a78bfa'];
@@ -669,7 +696,9 @@
             }
         }
 
-        // Keyboard support
+        /**
+         * Adds keyboard support for the spacebar to trigger the spin function.
+         */
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space' && !spinning) {
                 e.preventDefault();
