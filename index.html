@@ -532,18 +532,10 @@
                 spinPromises.push(spinReel(i, spinDurations[i]));
             }
 
-            await Promise.all(spinPromises);
-
-            // Get results
-            for (let i = 0; i < 7; i++) {
-                const reel = document.getElementById(`reel${i}`);
-                const symbols = reel.querySelectorAll('.slot-symbol');
-                const middleIndex = Math.floor(symbols.length / 2);
-                results.push(symbols[middleIndex].textContent);
-            }
+            const finalResults = await Promise.all(spinPromises);
 
             // Check for win
-            checkWin(results);
+            checkWin(finalResults);
             
             spinning = false;
             document.getElementById('spinButton').disabled = false;
@@ -597,7 +589,7 @@
                         // Ensure exact positioning in center
                         const finalPosition = -(targetIndex * symbolHeight);
                         reel.style.top = finalPosition + 'px';
-                        resolve();
+                        resolve(symbols[targetIndex].textContent);
                     }
                 };
                 
