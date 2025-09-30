@@ -8,7 +8,7 @@ This project is a simple yet engaging web application that simulates a slot mach
 
 ## 🎮 How to Play
 
-1.  **Open the Game**: Simply open the `index.html` file in your favorite web browser.
+1.  **Open the Game**: Simply open the dodep.nikitka.pro in your favorite web browser.
 2.  **Start Spinning**:
     *   Click the large **"🎲 КРУТИТЬ"** (Spin) button.
     *   Alternatively, you can press the **Spacebar** on your keyboard to spin the reels.
