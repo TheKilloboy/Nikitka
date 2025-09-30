@@ -484,7 +484,7 @@
         let spinning = false;
 
         /**
-         * Creates star elements and appends them to the stars container for a background effect.
+         * Создает элементы звезд и добавляет их в контейнер для создания эффекта фона.
          */
         const starsContainer = document.getElementById('stars');
         for (let i = 0; i < 100; i++) {
@@ -497,7 +497,7 @@
         }
 
         /**
-         * Initializes the slot machine reels with random symbols.
+         * Инициализирует барабаны игрового автомата случайными символами.
          */
         function initReels() {
             for (let i = 0; i < 7; i++) {
@@ -514,7 +514,7 @@
         initReels();
 
         /**
-         * Starts the spinning of the reels, updates stats, and checks for a win.
+         * Запускает вращение барабанов, обновляет статистику и проверяет выигрыш.
          * @returns {Promise<void>}
          */
         async function spin() {
@@ -550,10 +550,10 @@
         }
 
         /**
-         * Animates a single reel to spin and land on a symbol.
-         * @param {number} index - The index of the reel to spin.
-         * @param {number} duration - The duration of the spin animation.
-         * @returns {Promise<string>} A promise that resolves with the final symbol.
+         * Анимирует вращение одного барабана до остановки на символе.
+         * @param {number} index - Индекс барабана для вращения.
+         * @param {number} duration - Продолжительность анимации вращения.
+         * @returns {Promise<string>} Промис, который разрешается с конечным символом.
          */
         function spinReel(index, duration) {
             return new Promise((resolve) => {
@@ -612,8 +612,8 @@
         }
 
         /**
-         * Checks the results of the spin to see if the player has won.
-         * @param {string[]} results - An array of the symbols from each reel.
+         * Проверяет результаты вращения, чтобы определить, выиграл ли игрок.
+         * @param {string[]} results - Массив символов с каждого барабана.
          */
         function checkWin(results) {
             let correctCount = 0;
@@ -648,21 +648,21 @@
         }
 
         /**
-         * Displays the win overlay message.
+         * Отображает оверлей с сообщением о выигрыше.
          */
         function showWinOverlay() {
             document.getElementById('winOverlay').style.display = 'flex';
         }
 
         /**
-         * Closes the win overlay message.
+         * Закрывает оверлей с сообщением о выигрыше.
          */
         function closeWinMessage() {
             document.getElementById('winOverlay').style.display = 'none';
         }
 
         /**
-         * Creates a fireworks effect on the screen.
+         * Создает эффект фейерверка на экране.
          */
         function createFireworks() {
             const container = document.getElementById('fireworks');
@@ -697,7 +697,7 @@
         }
 
         /**
-         * Adds keyboard support for the spacebar to trigger the spin function.
+         * Добавляет поддержку клавиатуры для запуска вращения по нажатию на пробел.
          */
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space' && !spinning) {
