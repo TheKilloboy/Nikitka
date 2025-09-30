@@ -20,14 +20,6 @@ This project is a simple yet engaging web application that simulates a slot mach
 
 A special "Jackpot" message and a fireworks display will appear when you win!
 
-## 🛠️ Setup
-
-There is no complex setup required to run this project. Since it's a self-contained application, you only need a modern web browser.
-
-1.  Clone or download this repository.
-2.  Navigate to the project directory.
-3.  Open the `index.html` file in a web browser (e.g., Chrome, Firefox, Safari).
-
 That's it! You're ready to play.
 
 ## 📁 File Structure
